@@ -51,7 +51,7 @@ fn main() {
 
 fn infinite_mode() {
     let mut running_ = true;
-    let mut is_correct = false;
+    let mut is_correct = true;
     let mut history: Vec<String> = Vec::new();
     let mut error_num: i8 = 0;
     let mut error_count: i8 = 0;
@@ -76,25 +76,6 @@ fn infinite_mode() {
             "[ctrl+c to exit or Backspace]".red(),
             "-->".blue()
         );
-
-        if words_quest.len() == user_typed.join("").len() {
-            history.push(user_typed.join(""));
-            error_num = error_count;
-            error_count = 0;
-            words_gen = [
-                scripts::word_random(),
-                scripts::word_random(),
-                scripts::word_random(),
-                scripts::word_random(),
-                scripts::word_random(),
-            ];
-            words_quest = words_gen.join(" ");
-            words_all = words_quest.split("").collect();
-            words_all.remove(0);
-            words_all.remove(words_all.len() - 1);
-            user_typed = Vec::new();
-            continue;
-        }
 
         if history.len() > 0 {
             for past in &history {
@@ -132,7 +113,30 @@ fn infinite_mode() {
         //let test1 = "Testword";
         //let test2: Vec<&str> = test1.split("").filter(|i| !i.is_empty()).collect();
         //println!("\n {}", words_quest.blue());
-        println!("\n  {}", "=========================|".yellow());
+        println!(
+            "\n{}",
+            "===============================================".yellow()
+        );
+
+        //Restart after done
+        if words_quest.len() == user_typed.join("").len() {
+            history.push(user_typed.join(""));
+            error_num = error_count;
+            error_count = 0;
+            words_gen = [
+                scripts::word_random(),
+                scripts::word_random(),
+                scripts::word_random(),
+                scripts::word_random(),
+                scripts::word_random(),
+            ];
+            words_quest = words_gen.join(" ");
+            words_all = words_quest.split("").collect();
+            words_all.remove(0);
+            words_all.remove(words_all.len() - 1);
+            user_typed = Vec::new();
+            continue;
+        }
 
         for key in io::stdin().bytes() {
             let keybyte = key.unwrap();
